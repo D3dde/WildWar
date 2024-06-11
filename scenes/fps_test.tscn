@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://ckv3blddl3b8d"]
+
+[ext_resource type="Script" path="res://scripts/controller/basic_movement.gd" id="1_0hfvq"]
+[ext_resource type="Texture2D" uid="uid://bbn8i2sxkwwbq" path="res://material/gridbox/Green/texture_01.png" id="1_t8r0q"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yys74"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vvvwu"]
+albedo_texture = ExtResource("1_t8r0q")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_r7u8p"]
+
+[node name="CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("camera")]
+script = ExtResource("1_0hfvq")
+camera = NodePath("CameraContainer/Camera3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_yys74")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+material_override = SubResource("StandardMaterial3D_vvvwu")
+mesh = SubResource("CapsuleMesh_r7u8p")
+skeleton = NodePath("../..")
+
+[node name="CameraContainer" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CameraContainer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="CameraContainer/Camera3D"]
+update_mode = 1

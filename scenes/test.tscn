@@ -1,0 +1,51 @@
+[gd_scene load_steps=11 format=3 uid="uid://mr0iww8h82wg"]
+
+[ext_resource type="PackedScene" uid="uid://cr2p56hucfylt" path="res://scenes/world_environment.tscn" id="1_6snap"]
+[ext_resource type="Texture2D" uid="uid://ehgyx25kgaar" path="res://material/gridbox/Orange/texture_02.png" id="2_r8uvk"]
+[ext_resource type="Texture2D" uid="uid://crpqvwf16t7ac" path="res://material/gridbox/Dark/texture_08.png" id="3_lp6yy"]
+[ext_resource type="PackedScene" uid="uid://ckv3blddl3b8d" path="res://scenes/fps_test.tscn" id="4_lfpav"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qsg3m"]
+albedo_texture = ExtResource("2_r8uvk")
+texture_filter = 1
+point_size = 0.1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_g7xx3"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_4wb8o"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h1i7c"]
+albedo_texture = ExtResource("3_lp6yy")
+
+[sub_resource type="BoxMesh" id="BoxMesh_51hek"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2whju"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" parent="." instance=ExtResource("1_6snap")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_qsg3m")
+lod_bias = 0.001
+mesh = SubResource("PlaneMesh_g7xx3")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_4wb8o")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 8.44908)
+material_override = SubResource("StandardMaterial3D_h1i7c")
+mesh = SubResource("BoxMesh_51hek")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D"]
+shape = SubResource("BoxShape3D_2whju")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("4_lfpav")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.81374, 0)
