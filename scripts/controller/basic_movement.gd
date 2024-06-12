@@ -93,7 +93,7 @@ func _physics_process(delta):
 	velocity.z = move_toward(velocity.z,direction.z, HORIZONTAL_ACCELERATION * delta)
 	
 	
-	var angle=5
+	var angle=2.5
 	var t = delta * 6
 	if Input.mouse_mode==Input.MOUSE_MODE_CAPTURED: 
 		rotation_degrees=rotation_degrees.lerp(Vector3(input_dir.normalized().y*angle,rotation_degrees.y,-input_dir.normalized().x*angle),t)
