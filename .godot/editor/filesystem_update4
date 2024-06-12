@@ -1,0 +1,4 @@
+res://scenes/test.tscn
+res://scenes/world_environment.tscn
+res://scenes/fps_test.tscn
+res://scripts/controller/basic_movement.gd

@@ -1,0 +1,5 @@
+ShapeCast3D
+AnimationPlayer
+CollisionShape3D
+StaticBody3D
+MeshInstance3D
