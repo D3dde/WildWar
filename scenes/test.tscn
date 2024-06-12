@@ -61,7 +61,7 @@ mesh = SubResource("BoxMesh_51hek")
 shape = SubResource("BoxShape3D_2whju")
 
 [node name="CharacterBody3D" parent="." instance=ExtResource("4_lfpav")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.81374, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.37196, 3.46225)
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -7)

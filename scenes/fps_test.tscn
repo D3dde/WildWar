@@ -1,7 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://ckv3blddl3b8d"]
+[gd_scene load_steps=13 format=3 uid="uid://ckv3blddl3b8d"]
 
 [ext_resource type="Script" path="res://scripts/controller/basic_movement.gd" id="1_0hfvq"]
 [ext_resource type="Texture2D" uid="uid://bbn8i2sxkwwbq" path="res://material/gridbox/Green/texture_01.png" id="1_t8r0q"]
+[ext_resource type="Script" path="res://scripts/reticle.gd" id="3_scmlf"]
+[ext_resource type="Theme" uid="uid://bu4qh1oju7q04" path="res://themes/debug.tres" id="4_mc5ey"]
+[ext_resource type="Script" path="res://scripts/debug.gd" id="5_086y7"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yys74"]
 
@@ -9,6 +12,57 @@
 albedo_texture = ExtResource("1_t8r0q")
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_r7u8p"]
+
+[sub_resource type="Animation" id="Animation_woy3y"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CameraContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D/MeshInstance3D:mesh:height")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape3D:shape:height")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape3D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_vic4o"]
 resource_name = "crouch"
@@ -62,57 +116,6 @@ tracks/3/keys = {
 "values": [Vector3(0, 1, 0), Vector3(0, 0.75, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_woy3y"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CameraContainer:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CollisionShape3D/MeshInstance3D:mesh:height")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [2.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("CollisionShape3D:shape:height")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [2.0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("CollisionShape3D:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 1, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mskmd"]
 _data = {
 "RESET": SubResource("Animation_woy3y"),
@@ -122,10 +125,12 @@ _data = {
 [sub_resource type="SphereShape3D" id="SphereShape3D_5ti5e"]
 
 [node name="CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("camera", "animation_player", "crouch_shape")]
+slide_on_ceiling = false
 script = ExtResource("1_0hfvq")
+select_toggle_crouch = true
 camera = NodePath("CameraContainer/Camera3D")
 animation_player = NodePath("AnimationPlayer")
-sens = 5.0
+sens = 3.0
 crouch_shape = NodePath("ShapeCast3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -154,3 +159,62 @@ libraries = {
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 shape = SubResource("SphereShape3D_5ti5e")
 debug_shape_custom_color = Color(1, 0, 1, 1)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="Control" node_paths=PackedStringArray("lines", "player")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_scmlf")
+lines = [NodePath("Top"), NodePath("Right"), NodePath("Down"), NodePath("Left")]
+player = NodePath("../..")
+
+[node name="Top" type="Line2D" parent="Control/CenterContainer"]
+points = PackedVector2Array(0, -10, 0, -20)
+width = 2.0
+
+[node name="Right" type="Line2D" parent="Control/CenterContainer"]
+points = PackedVector2Array(-10, 0, -20, 0)
+width = 2.0
+
+[node name="Down" type="Line2D" parent="Control/CenterContainer"]
+points = PackedVector2Array(0, 10, 0, 20)
+width = 2.0
+
+[node name="Left" type="Line2D" parent="Control/CenterContainer"]
+points = PackedVector2Array(10, 0, 20, 0)
+width = 2.0
+
+[node name="DebugPanel" type="PanelContainer" parent="Control" node_paths=PackedStringArray("container")]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 215.0
+offset_bottom = 50.0
+theme = ExtResource("4_mc5ey")
+script = ExtResource("5_086y7")
+container = NodePath("PanelContainer/VBoxContainer")
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/DebugPanel"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/DebugPanel/PanelContainer"]
+layout_mode = 2

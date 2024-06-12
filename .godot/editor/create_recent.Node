@@ -1,3 +1,9 @@
+Label
+VBoxContainer
+PanelContainer
+Line2D
+CenterContainer
+Control
 ShapeCast3D
 AnimationPlayer
 CollisionShape3D
