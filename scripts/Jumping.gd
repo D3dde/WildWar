@@ -11,6 +11,9 @@ func enter() -> void:
 func update(delta):
 	if player.is_on_floor():
 		if player.velocity.length() > 0:
-			transition.emit("Walking")
+			if player.is_crouching == false:
+				transition.emit("Walking")
+			elif player.is_crouching == true:
+				transition.emit("CrouchWalk")
 		if player.velocity.length() == 0:
 			transition.emit("Idle")

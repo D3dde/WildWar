@@ -2,10 +2,6 @@ res://scenes/test.tscn
 res://scripts/controller/basic_movement.gd
 res://themes/debug.tres
 res://scenes/fps_test.tscn
-res://scripts/state.gd
-res://scripts/Idle.gd
-res://scripts/PlayerStateMachine.gd
-res://scripts/Walking.gd
-res://scripts/Grouling.gd
 res://scripts/Jumping.gd
-res://scripts/CrouchWalk.gd
+res://scripts/Sprinting.gd
+res://scripts/Walking.gd

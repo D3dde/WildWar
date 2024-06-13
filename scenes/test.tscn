@@ -64,7 +64,7 @@ shape = SubResource("BoxShape3D_2whju")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.37196, 3.46225)
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -7)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.23844, -7)
 mesh = SubResource("BoxMesh_cl4d0")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D3"]

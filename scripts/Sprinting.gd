@@ -1,11 +1,15 @@
-class_name Walking
+class_name Sprinting
+
 
 extends State
+
 
 @export var player : CharacterBody3D
 @export var animation : AnimationPlayer
 
+
 func enter() -> void:
+	animation.speed_scale += 0.5
 	if animation.is_playing():
 		if animation.current_animation == "crouch":
 			animation.queue("Walking")
@@ -14,14 +18,16 @@ func enter() -> void:
 	else:
 		animation.play("Walking")
 
+func exit() -> void:
+	animation.speed_scale -=0.5
+
+
 
 
 func update(delta):
-	if player.velocity.length() == 0.0 and player.is_crouching == false:
-		transition.emit("Idle")
-	if player.velocity.length() > 0.0 and player.is_crouching == true:
+	if !player.is_on_floor:
+		transition.emit("Jump")
+	if player.velocity.length() <= 5:
+		transition.emit("Walking")
+	if player.is_crouching==true:
 		transition.emit("CrouchWalk")
-	if !player.is_on_floor():
-		transition.emit("Jumping")
-	if player.SPEED > 5:
-		transition.emit("Sprinting")

@@ -5,7 +5,7 @@ extends CharacterBody3D
 @export var select_toggle_crouch := false
 
 
-
+var  is_sprinting = false
 var SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const FRICTION = 25
@@ -32,8 +32,7 @@ func _ready():
 	crouch_shape.add_exception(self)
 	Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
 	sens /= 1000
-
-
+	
 
 
 func _input(event):
@@ -43,6 +42,15 @@ func _input(event):
 		crouch(true)
 	if event.is_action_released("crouch") and select_toggle_crouch == false and crouch_shape.is_colliding() == false and is_crouching==true:
 		crouch(false)
+	if event.is_action_pressed("sprint") and is_crouching==false and velocity.length() != 0 and Input.is_action_pressed("up"):
+		is_sprinting = true
+		SPEED = 7.5
+	if event.is_action_released("up"):
+		is_sprinting = false
+		SPEED = 5.0
+	if event.is_action_pressed("crouch"):
+		is_sprinting = false
+		SPEED = 3.0
 
 
 
@@ -67,11 +75,15 @@ func _unhandled_key_input(event):
 
 
 func _physics_process(delta):
+	
+	
+	if is_crouching == true and crouch_shape.is_colliding()== false and select_toggle_crouch == false and !Input.is_action_pressed("crouch"):
+		toggle_crouch()
+	
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
-		
-		
 		
 	# Handle Jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor() and Input.mouse_mode==Input.MOUSE_MODE_CAPTURED and Input.is_action_pressed("crouch")==false:
@@ -79,7 +91,11 @@ func _physics_process(delta):
 			toggle_crouch()
 		else:
 			velocity.y += JUMP_VELOCITY
-
+	var tween := create_tween()
+	if is_sprinting:
+		tween.tween_property(camera, "fov", 85.0 + 10.0, 0.2)
+	else:
+		tween.tween_property(camera, "fov", 85.0 - 10.0, 0.2)
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Vector3.ZERO
@@ -91,6 +107,7 @@ func _physics_process(delta):
 	direction *= SPEED
 	velocity.x = move_toward(velocity.x,direction.x, HORIZONTAL_ACCELERATION * delta)
 	velocity.z = move_toward(velocity.z,direction.z, HORIZONTAL_ACCELERATION * delta)
+	
 	
 	
 	var angle=2.5
