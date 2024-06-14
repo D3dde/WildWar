@@ -25,9 +25,9 @@ func _process(delta):
 func _physics_process(delta):
 	current_state.physics_update(delta)
 	
-	#################################
+	################################ DEBUG
 	print(current_state)
-	################################
+	################################ DEBUG
 
 
 func on_child_transition(new_state_name: StringName) -> void:

@@ -26,7 +26,7 @@ func exit() -> void:
 
 func update(delta):
 	if !player.is_on_floor:
-		transition.emit("Jump")
+		transition.emit("Jumping")
 	if player.velocity.length() <= 5:
 		transition.emit("Walking")
 	if player.is_crouching==true:

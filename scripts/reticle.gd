@@ -1,8 +1,9 @@
 extends CenterContainer
 
+@export var player : CharacterBody3D
+
 #lines
 @export var lines : Array[Line2D]
-@export var player : CharacterBody3D
 @export var reticle_speed := 0.25
 @onready var reticle_distance=get_viewport().size[0]/500
 

@@ -1,17 +1,19 @@
 extends CharacterBody3D
 
 
-
 @export var select_toggle_crouch := false
 
-
+const sprintSeed = 7.5
+const walkSpeed = 5.0
+const crouchSpeed = 3.0
 var  is_sprinting = false
-var SPEED = 5.0
+var SPEED = walkSpeed
 const JUMP_VELOCITY = 4.5
 const FRICTION = 25
 const HORIZONTAL_ACCELERATION = 30
 const MAX_SPEED=5
-# Get the gravity from the project settings to be synced with RigidBody nodes.
+
+
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
@@ -19,7 +21,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var animation_player: AnimationPlayer
 
 
-@export var sens : float
+@export var sens : float = 3.0
 
 
 var is_crouching : bool = false
@@ -29,10 +31,15 @@ var is_crouching : bool = false
 
 
 func _ready():
+	# crouch collision fix
 	crouch_shape.add_exception(self)
-	Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
-	sens /= 1000
 	
+	# mouse
+	Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
+	
+	# easier sens controller (@export var sens : float)
+	sens /= 1000
+
 
 
 func _input(event):
@@ -42,19 +49,25 @@ func _input(event):
 		crouch(true)
 	if event.is_action_released("crouch") and select_toggle_crouch == false and crouch_shape.is_colliding() == false and is_crouching==true:
 		crouch(false)
+	
+	#sprint
 	if event.is_action_pressed("sprint") and is_crouching==false and velocity.length() != 0 and Input.is_action_pressed("up"):
 		is_sprinting = true
-		SPEED = 7.5
+		SPEED = sprintSeed
 	if event.is_action_released("up"):
 		is_sprinting = false
-		SPEED = 5.0
+		SPEED = walkSpeed
 	if event.is_action_pressed("crouch"):
 		is_sprinting = false
-		SPEED = 3.0
+	
+	if event.is_action_pressed("crouch") and is_sprinting == true:
+		var tween1 := create_tween()
+		tween1.tween_property(self, "speed", 7.5 - 4.5, 2)
+		animation_player.play("crouch")
+		is_sprinting = false
 
 
-
-
+# mouse
 func _unhandled_input(event):
 	if event is InputEventMouseMotion and Input.mouse_mode==Input.MOUSE_MODE_CAPTURED:
 		rotate_y(-event.relative.x * sens)
@@ -63,7 +76,7 @@ func _unhandled_input(event):
 
 
 
-
+# mouse
 func _unhandled_key_input(event):
 	if Input.is_action_just_pressed("exit"):
 		if Input.mouse_mode==Input.MOUSE_MODE_CAPTURED: 
@@ -75,29 +88,37 @@ func _unhandled_key_input(event):
 
 
 func _physics_process(delta):
-	
-	
-	if is_crouching == true and crouch_shape.is_colliding()== false and select_toggle_crouch == false and !Input.is_action_pressed("crouch"):
-		toggle_crouch()
+	# quality of life crouch
+	if is_crouching == true:
+		if crouch_shape.is_colliding()== false and select_toggle_crouch == false and !Input.is_action_pressed("crouch"):
+			toggle_crouch()
 	
 	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
-		
+	
+	
+	
+	
+	
+	
 	# Handle Jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor() and Input.mouse_mode==Input.MOUSE_MODE_CAPTURED and Input.is_action_pressed("crouch")==false:
 		if is_crouching==true:
 			toggle_crouch()
 		else:
 			velocity.y += JUMP_VELOCITY
+	
+	# handle fov
 	var tween := create_tween()
 	if is_sprinting:
 		tween.tween_property(camera, "fov", 75.0 + 20.0, 0.2)
 	else:
 		tween.tween_property(camera, "fov", 95.0 - 20.0, 0.2)
+	
+	
 	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Vector3.ZERO
 	var movetoward = Vector3.ZERO
 	input_dir.x = Input.get_vector("left", "right", "up", "down").x
@@ -109,7 +130,7 @@ func _physics_process(delta):
 	velocity.z = move_toward(velocity.z,direction.z, HORIZONTAL_ACCELERATION * delta)
 	
 	
-	
+	# camera tilt rotation
 	var angle=2.5
 	var t = delta * 6
 	if Input.mouse_mode==Input.MOUSE_MODE_CAPTURED: 
@@ -119,7 +140,7 @@ func _physics_process(delta):
 	force_update_transform()
 
 
-
+# if select_toggle_crouch == true
 func toggle_crouch():
 	if is_crouching == true and crouch_shape.is_colliding() == false:
 		crouch(false)
@@ -127,14 +148,14 @@ func toggle_crouch():
 		crouch(true)
 
 
-
+# small function for crounch
 func crouch(state : bool):
 	match state:
 		true:
 			animation_player.play("crouch")
-			SPEED = 3
+			SPEED = crouchSpeed
 			is_crouching = !is_crouching
 		false:
 			animation_player.play_backwards("crouch")
-			SPEED = 5
+			SPEED = walkSpeed
 			is_crouching = !is_crouching

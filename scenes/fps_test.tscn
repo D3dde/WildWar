@@ -304,7 +304,6 @@ slide_on_ceiling = false
 script = ExtResource("1_0hfvq")
 camera = NodePath("CameraContainer/Camera3D")
 animation_player = NodePath("AnimationPlayer")
-sens = 3.0
 crouch_shape = NodePath("ShapeCast3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -343,7 +342,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="CenterContainer" type="CenterContainer" parent="Control" node_paths=PackedStringArray("lines", "player")]
+[node name="CenterContainer" type="CenterContainer" parent="Control" node_paths=PackedStringArray("player", "lines")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -357,8 +356,8 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_scmlf")
-lines = [NodePath("Top"), NodePath("Right"), NodePath("Down"), NodePath("Left")]
 player = NodePath("../..")
+lines = [NodePath("Top"), NodePath("Right"), NodePath("Down"), NodePath("Left")]
 
 [node name="Top" type="Line2D" parent="Control/CenterContainer"]
 points = PackedVector2Array(0, -10, 0, -20)
