@@ -93,9 +93,9 @@ func _physics_process(delta):
 			velocity.y += JUMP_VELOCITY
 	var tween := create_tween()
 	if is_sprinting:
-		tween.tween_property(camera, "fov", 85.0 + 10.0, 0.2)
+		tween.tween_property(camera, "fov", 75.0 + 20.0, 0.2)
 	else:
-		tween.tween_property(camera, "fov", 85.0 - 10.0, 0.2)
+		tween.tween_property(camera, "fov", 95.0 - 20.0, 0.2)
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Vector3.ZERO
