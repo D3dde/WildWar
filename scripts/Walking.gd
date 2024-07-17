@@ -13,6 +13,7 @@ func enter() -> void:
 			animation.play("Walking")
 	else:
 		animation.play("Walking")
+	
 
 
 

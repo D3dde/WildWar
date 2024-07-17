@@ -3,6 +3,7 @@ class_name Sprinting
 
 extends State
 
+@onready var walkspeed = $"../..".walkSpeed
 
 @export var player : CharacterBody3D
 @export var animation : AnimationPlayer
@@ -27,7 +28,7 @@ func exit() -> void:
 func update(delta):
 	if !player.is_on_floor:
 		transition.emit("Jumping")
-	if player.velocity.length() <= 5:
+	if player.velocity.length() <= walkspeed:
 		transition.emit("Walking")
 	if player.is_crouching==true:
 		transition.emit("CrouchWalk")

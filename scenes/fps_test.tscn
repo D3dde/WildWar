@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://scripts/Idle.gd" id="7_00p1x"]
 [ext_resource type="Script" path="res://scripts/Walking.gd" id="8_vmmex"]
 [ext_resource type="Script" path="res://scripts/Jumping.gd" id="9_3kv61"]
-[ext_resource type="Script" path="res://scripts/Grouling.gd" id="10_bjedi"]
+[ext_resource type="Script" path="res://scripts/crouchIdle.gd" id="10_bjedi"]
 [ext_resource type="Script" path="res://scripts/CrouchWalk.gd" id="11_bgr1q"]
 [ext_resource type="Script" path="res://scripts/Sprinting.gd" id="12_1hmdt"]
 

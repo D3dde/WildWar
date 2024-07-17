@@ -60,11 +60,7 @@ func _input(event):
 	if event.is_action_pressed("crouch"):
 		is_sprinting = false
 	
-	if event.is_action_pressed("crouch") and is_sprinting == true:
-		var tween1 := create_tween()
-		tween1.tween_property(self, "speed", 7.5 - 4.5, 2)
-		animation_player.play("crouch")
-		is_sprinting = false
+
 
 
 # mouse
